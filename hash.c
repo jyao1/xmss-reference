@@ -63,7 +63,7 @@ int prf(const xmss_params *params,
         unsigned char *out, const unsigned char in[32],
         const unsigned char *key)
 {
-    unsigned char buf[params->padding_len + params->n + 32];
+    unsigned char buf[XMSS_PARAM_MAX_padding_len + XMSS_PARAM_MAX_n + 32];
 
     ull_to_bytes(buf, params->padding_len, XMSS_HASH_PADDING_PRF);
     memcpy(buf + params->padding_len, key, params->n);
@@ -80,7 +80,7 @@ int prf_keygen(const xmss_params *params,
         unsigned char *out, const unsigned char *in,
         const unsigned char *key)
 {
-    unsigned char buf[params->padding_len + 2*params->n + 32];
+    unsigned char buf[XMSS_PARAM_MAX_padding_len + 2*XMSS_PARAM_MAX_n + 32];
 
     ull_to_bytes(buf, params->padding_len, XMSS_HASH_PADDING_PRF_KEYGEN);
     memcpy(buf + params->padding_len, key, params->n);
@@ -118,8 +118,8 @@ int thash_h(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
             const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned char buf[params->padding_len + 3 * params->n];
-    unsigned char bitmask[2 * params->n];
+    unsigned char buf[XMSS_PARAM_MAX_padding_len + 3 * XMSS_PARAM_MAX_n];
+    unsigned char bitmask[2 * XMSS_PARAM_MAX_n];
     unsigned char addr_as_bytes[32];
     unsigned int i;
 
@@ -150,8 +150,8 @@ int thash_f(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
             const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned char buf[params->padding_len + 2 * params->n];
-    unsigned char bitmask[params->n];
+    unsigned char buf[XMSS_PARAM_MAX_padding_len + 2 * XMSS_PARAM_MAX_n];
+    unsigned char bitmask[XMSS_PARAM_MAX_n];
     unsigned char addr_as_bytes[32];
     unsigned int i;
 

@@ -22,8 +22,8 @@ static void treehash(const xmss_params *params,
                      const unsigned char *pub_seed,
                      uint32_t leaf_idx, const uint32_t subtree_addr[8])
 {
-    unsigned char stack[(params->tree_height+1)*params->n];
-    unsigned int heights[params->tree_height+1];
+    unsigned char stack[(XMSS_PARAM_MAX_tree_height+1)*XMSS_PARAM_MAX_n];
+    unsigned int heights[XMSS_PARAM_MAX_tree_height+1];
     unsigned int offset = 0;
 
     /* The subtree has at most 2^20 leafs, so uint32_t suffices. */
@@ -138,7 +138,7 @@ int xmssmt_core_seed_keypair(const xmss_params *params,
     /* We do not need the auth path in key generation, but it simplifies the
        code to have just one treehash routine that computes both root and path
        in one function. */
-    unsigned char auth_path[params->tree_height * params->n];
+    unsigned char auth_path[XMSS_PARAM_MAX_tree_height * XMSS_PARAM_MAX_n];
     uint32_t top_tree_addr[8] = {0};
     set_layer_addr(top_tree_addr, params->d - 1);
 
@@ -168,7 +168,7 @@ int xmssmt_core_seed_keypair(const xmss_params *params,
 int xmssmt_core_keypair(const xmss_params *params,
                         unsigned char *pk, unsigned char *sk)
 {
-    unsigned char seed[3 * params->n];
+    unsigned char seed[3 * XMSS_PARAM_MAX_n];
 
     randombytes(seed, 3 * params->n);
     xmssmt_core_seed_keypair(params, pk, sk, seed);
@@ -190,7 +190,7 @@ int xmssmt_core_sign(const xmss_params *params,
     const unsigned char *pub_root = sk + params->index_bytes + 2*params->n;
     const unsigned char *pub_seed = sk + params->index_bytes + 3*params->n;
 
-    unsigned char root[params->n];
+    unsigned char root[XMSS_PARAM_MAX_n];
     unsigned char *mhash = root;
     unsigned long long idx;
     unsigned char idx_bytes_32[32];

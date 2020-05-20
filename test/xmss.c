@@ -40,8 +40,8 @@ int main()
     XMSS_STR_TO_OID(&oid, XMSS_VARIANT);
     XMSS_PARSE_OID(&params, oid);
 
-    unsigned char pk[XMSS_OID_LEN + params.pk_bytes];
-    unsigned char sk[XMSS_OID_LEN + params.sk_bytes];
+    unsigned char pk[XMSS_OID_LEN + XMSS_PARAM_MAX_pk_bytes];
+    unsigned char sk[XMSS_OID_LEN + XMSS_PARAM_MAX_sk_bytes];
     unsigned char *m = malloc(XMSS_MLEN);
     unsigned char *sm = malloc(params.sig_bytes + XMSS_MLEN);
     unsigned char *mout = malloc(params.sig_bytes + XMSS_MLEN);

@@ -16,7 +16,7 @@ static void expand_seed(const xmss_params *params,
                         const unsigned char *pub_seed, uint32_t addr[8])
 {
     uint32_t i;
-    unsigned char buf[params->n + 32];
+    unsigned char buf[XMSS_PARAM_MAX_n + 32];
 
     set_hash_addr(addr, 0);
     set_key_and_mask(addr, 0);
@@ -83,7 +83,7 @@ static void wots_checksum(const xmss_params *params,
                           int *csum_base_w, const int *msg_base_w)
 {
     int csum = 0;
-    unsigned char csum_bytes[(params->wots_len2 * params->wots_log_w + 7) / 8];
+    unsigned char csum_bytes[(XMSS_PARAM_MAX_wots_len2 * XMSS_PARAM_MAX_wots_log_w + 7) / 8];
     unsigned int i;
 
     /* Compute checksum. */
@@ -94,7 +94,7 @@ static void wots_checksum(const xmss_params *params,
     /* Convert checksum to base_w. */
     /* Make sure expected empty zero bits are the least significant bits. */
     csum = csum << (8 - ((params->wots_len2 * params->wots_log_w) % 8));
-    ull_to_bytes(csum_bytes, sizeof(csum_bytes), csum);
+    ull_to_bytes(csum_bytes, (params->wots_len2 * params->wots_log_w + 7) / 8, csum);
     base_w(params, csum_base_w, params->wots_len2, csum_bytes);
 }
 
@@ -139,7 +139,7 @@ void wots_sign(const xmss_params *params,
                const unsigned char *seed, const unsigned char *pub_seed,
                uint32_t addr[8])
 {
-    int lengths[params->wots_len];
+    int lengths[XMSS_PARAM_MAX_wots_len];
     uint32_t i;
 
     chain_lengths(params, lengths, msg);
@@ -163,7 +163,7 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *sig, const unsigned char *msg,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
-    int lengths[params->wots_len];
+    int lengths[XMSS_PARAM_MAX_wots_len];
     uint32_t i;
 
     chain_lengths(params, lengths, msg);

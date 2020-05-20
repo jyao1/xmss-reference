@@ -15,12 +15,12 @@ int main()
     /* For WOTS it doesn't matter if we use XMSS or XMSSMT. */
     xmss_parse_oid(&params, oid);
 
-    unsigned char seed[params.n];
-    unsigned char pub_seed[params.n];
-    unsigned char pk1[params.wots_sig_bytes];
-    unsigned char pk2[params.wots_sig_bytes];
-    unsigned char sig[params.wots_sig_bytes];
-    unsigned char m[params.n];
+    unsigned char seed[XMSS_PARAM_MAX_n];
+    unsigned char pub_seed[XMSS_PARAM_MAX_n];
+    unsigned char pk1[XMSS_PARAM_MAX_wots_sig_bytes];
+    unsigned char pk2[XMSS_PARAM_MAX_wots_sig_bytes];
+    unsigned char sig[XMSS_PARAM_MAX_wots_sig_bytes];
+    unsigned char m[XMSS_PARAM_MAX_n];
     uint32_t addr[8] = {0};
 
     randombytes(seed, params.n);

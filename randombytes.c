@@ -2,40 +2,24 @@
 This code was taken from the SPHINCS reference implementation and is public domain.
 */
 
-#include <fcntl.h>
 #include <unistd.h>
 
-static int fd = -1;
+#include <Uefi.h>
+#include <Library/RngLib.h>
 
 void randombytes(unsigned char *x, unsigned long long xlen)
 {
-    int i;
+    UINT64  Count;
+    UINT16 Rest;
+    UINT64 Index;
 
-    if (fd == -1) {
-        for (;;) {
-            fd = open("/dev/urandom", O_RDONLY);
-            if (fd != -1) {
-                break;
-            }
-            sleep(1);
-        }
+    Count = xlen / 2;
+    for (Index = 0; Index < Count; Index++) {
+      GetRandomNumber16 ((UINT16 *)x + Index);
     }
 
-    while (xlen > 0) {
-        if (xlen < 1048576) {
-            i = xlen;
-        }
-        else {
-            i = 1048576;
-        }
-
-        i = read(fd, x, i);
-        if (i < 1) {
-            sleep(1);
-            continue;
-        }
-
-        x += i;
-        xlen -= i;
+    if ((xlen % 2) != 0) {
+      GetRandomNumber16 (&Rest);
+      *((UINT8 *)x + Count * 2) = (UINT8)(Rest & 0xFF);
     }
 }
